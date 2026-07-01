@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MJS - 鏃ュ父鎵撳崱</title>
+  <title>MJS - 日常打卡</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header class="app-header">
     <div class="header-content">
       <h1>MJS</h1>
-      <p class="subtitle">姣忔棩鎵撳崱</p>
+      <p class="subtitle">每日打卡</p>
     </div>
     <div class="user-switcher">
-      <label for="username">浣跨敤鑰咃細</label>
+      <label for="username">使用者：</label>
       <select id="username">
-        <option value="鎴戣嚜宸?>鎴戣嚜宸?/option>
+        <option value="我自己">我自己</option>
       </select>
-      <button class="btn-icon" id="addUserBtn" title="娣诲姞浣跨敤鑰?>+</button>
+      <button class="btn-icon" id="addUserBtn" title="添加使用者">+</button>
     </div>
   </header>
 
@@ -26,32 +26,43 @@
       <button class="btn-nav" id="prevDay">&larr;</button>
       <div class="current-date">
         <span id="displayDate"></span>
-        <button class="btn-today" id="todayBtn">浠婂ぉ</button>
+        <button class="btn-today" id="todayBtn">今天</button>
       </div>
       <button class="btn-nav" id="nextDay">&rarr;</button>
     </section>
 
-    <section class="task-board">
-      <div class="task-list" id="taskList">
-        <!-- Tasks rendered here -->
-      </div>
-      <button class="btn-add-task" id="addTaskBtn">+ 娣诲姞浠诲姟</button>
-    </section>
+    <div class="app-layout">
+      <div class="app-left">
+        <section class="task-board">
+          <div class="task-list" id="taskList">
+            <!-- Tasks rendered here -->
+          </div>
+          <button class="btn-add-task" id="addTaskBtn">+ 添加任务</button>
+        </section>
 
-    <section class="stats-section">
-      <h2>鏈懆缁熻</h2>
-      <div class="stats-grid" id="statsGrid"></div>
-    </section>
+        <section class="stats-section">
+          <h2>本周统计</h2>
+          <div class="stats-grid" id="statsGrid"></div>
+        </section>
+      </div>
+
+      <aside class="app-sidebar">
+        <section class="record-section">
+          <h2>全员打卡总览</h2>
+          <div class="record-chart" id="recordChart"></div>
+        </section>
+      </aside>
+    </div>
   </main>
 
   <!-- Add User Dialog -->
   <dialog id="addUserDialog">
     <form method="dialog">
-      <h3>娣诲姞浣跨敤鑰?/h3>
-      <input type="text" id="newUserName" placeholder="杈撳叆鍚嶇О" required>
+      <h3>添加使用者</h3>
+      <input type="text" id="newUserName" placeholder="输入名称" required>
       <div class="dialog-actions">
-        <button value="cancel" class="btn-cancel">鍙栨秷</button>
-        <button value="ok" class="btn-primary">娣诲姞</button>
+        <button value="cancel" class="btn-cancel">取消</button>
+        <button value="ok" class="btn-primary">添加</button>
       </div>
     </form>
   </dialog>
@@ -59,22 +70,22 @@
   <!-- Add Task Dialog -->
   <dialog id="addTaskDialog">
     <form method="dialog">
-      <h3>娣诲姞鏂颁换鍔?/h3>
-      <input type="text" id="newTaskName" placeholder="渚嬪锛氳窇姝? required>
+      <h3>添加新任务</h3>
+      <input type="text" id="newTaskName" placeholder="例如：跑步" required>
       <select id="newTaskIcon">
-        <option value="馃弮">馃弮 杩愬姩</option>
-        <option value="馃挧">馃挧 鍠濇按</option>
-        <option value="馃摑">馃摑 绗旇</option>
-        <option value="馃摎">馃摎 瀛︿範</option>
-        <option value="馃">馃 鍐ユ兂</option>
-        <option value="馃">馃 楗</option>
-        <option value="馃摉">馃摉 闃呰</option>
-        <option value="鉁嶏笍">鉁嶏笍 鍐欎綔</option>
-        <option value="馃幆">馃幆 鑷畾涔?/option>
+        <option value="🏃">🏃 运动</option>
+        <option value="💧">💧 喝水</option>
+        <option value="📝">📝 笔记</option>
+        <option value="📚">📚 学习</option>
+        <option value="🧘">🧘 冥想</option>
+        <option value="🥗">🥗 饮食</option>
+        <option value="📖">📖 阅读</option>
+        <option value="✍️">✍️ 写作</option>
+        <option value="🎯">🎯 自定义</option>
       </select>
       <div class="dialog-actions">
-        <button value="cancel" class="btn-cancel">鍙栨秷</button>
-        <button value="ok" class="btn-primary">娣诲姞</button>
+        <button value="cancel" class="btn-cancel">取消</button>
+        <button value="ok" class="btn-primary">添加</button>
       </div>
     </form>
   </dialog>
@@ -82,11 +93,11 @@
   <!-- Confirm Dialog -->
   <dialog id="confirmDialog">
     <form method="dialog">
-      <h3 id="confirmTitle">纭</h3>
+      <h3 id="confirmTitle">确认</h3>
       <p id="confirmMessage"></p>
       <div class="dialog-actions">
-        <button value="cancel" class="btn-cancel">鍙栨秷</button>
-        <button value="ok" class="btn-danger">鍒犻櫎</button>
+        <button value="cancel" class="btn-cancel">取消</button>
+        <button value="ok" class="btn-danger">删除</button>
       </div>
     </form>
   </dialog>
@@ -94,4 +105,3 @@
   <script src="js/app.js"></script>
 </body>
 </html>
-

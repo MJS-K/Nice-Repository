@@ -93,7 +93,7 @@ body {
 }
 
 .app-main {
-  max-width: 640px;
+  max-width: 1080px;
   margin: 0 auto;
   padding: 20px 16px;
 }
@@ -506,3 +506,4 @@ dialog select:focus {
     width: 100%;
   }
 }
+
