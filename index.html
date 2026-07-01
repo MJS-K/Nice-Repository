@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MJS - 日常打卡</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-content">
+      <h1>MJS</h1>
+      <p class="subtitle">每日打卡</p>
+    </div>
+    <div class="user-switcher">
+      <label for="username">使用者：</label>
+      <select id="username">
+        <option value="我自己">我自己</option>
+      </select>
+      <button class="btn-icon" id="addUserBtn" title="添加使用者">+</button>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <section class="date-bar">
+      <button class="btn-nav" id="prevDay">&larr;</button>
+      <div class="current-date">
+        <span id="displayDate"></span>
+        <button class="btn-today" id="todayBtn">今天</button>
+      </div>
+      <button class="btn-nav" id="nextDay">&rarr;</button>
+    </section>
+
+    <section class="task-board">
+      <div class="task-list" id="taskList">
+        <!-- Tasks rendered here -->
+      </div>
+      <button class="btn-add-task" id="addTaskBtn">+ 添加任务</button>
+    </section>
+
+    <section class="stats-section">
+      <h2>本周统计</h2>
+      <div class="stats-grid" id="statsGrid"></div>
+    </section>
+  </main>
+
+  <!-- Add User Dialog -->
+  <dialog id="addUserDialog">
+    <form method="dialog">
+      <h3>添加使用者</h3>
+      <input type="text" id="newUserName" placeholder="输入名称" required>
+      <div class="dialog-actions">
+        <button value="cancel" class="btn-cancel">取消</button>
+        <button value="ok" class="btn-primary">添加</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Add Task Dialog -->
+  <dialog id="addTaskDialog">
+    <form method="dialog">
+      <h3>添加新任务</h3>
+      <input type="text" id="newTaskName" placeholder="例如：跑步" required>
+      <select id="newTaskIcon">
+        <option value="🏃">🏃 运动</option>
+        <option value="💧">💧 喝水</option>
+        <option value="📝">📝 笔记</option>
+        <option value="📚">📚 学习</option>
+        <option value="🧘">🧘 冥想</option>
+        <option value="🥗">🥗 饮食</option>
+        <option value="📖">📖 阅读</option>
+        <option value="✍️">✍️ 写作</option>
+        <option value="🎯">🎯 自定义</option>
+      </select>
+      <div class="dialog-actions">
+        <button value="cancel" class="btn-cancel">取消</button>
+        <button value="ok" class="btn-primary">添加</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Confirm Dialog -->
+  <dialog id="confirmDialog">
+    <form method="dialog">
+      <h3 id="confirmTitle">确认</h3>
+      <p id="confirmMessage"></p>
+      <div class="dialog-actions">
+        <button value="cancel" class="btn-cancel">取消</button>
+        <button value="ok" class="btn-danger">删除</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
