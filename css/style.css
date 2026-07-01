@@ -379,3 +379,130 @@ dialog select:focus {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+.app-main {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 20px 16px;
+}
+
+.app-layout {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.app-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.app-sidebar {
+  width: 340px;
+  flex-shrink: 0;
+}
+
+.record-section {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+
+.record-section h2 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+.record-chart {
+  overflow-x: auto;
+}
+
+.record-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.record-table th,
+.record-table td {
+  padding: 6px 4px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.record-table thead th {
+  font-weight: 600;
+  color: var(--text-light);
+  font-size: 12px;
+  padding-bottom: 8px;
+}
+
+.record-table .row-user {
+  text-align: left;
+  font-weight: 500;
+  padding-right: 8px;
+  font-size: 13px;
+  max-width: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.record-table .row-user.me {
+  color: var(--primary);
+}
+
+.record-table .cell-score {
+  min-width: 32px;
+  font-size: 12px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.record-table .cell-score.done {
+  background: #d4edda;
+  color: #155724;
+}
+
+.record-table .cell-score.partial {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.record-table .cell-score.none {
+  background: #f8f9fa;
+  color: #adb5bd;
+}
+
+.record-table .cell-score.today {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+
+.record-table .cell-score.future {
+  opacity: 0.3;
+}
+
+.record-table .cell-total {
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 13px;
+}
+
+.record-table .cell-empty {
+  color: var(--text-light);
+  font-size: 11px;
+}
+
+/* Mobile: sidebar goes below */
+@media (max-width: 840px) {
+  .app-layout {
+    flex-direction: column;
+  }
+  .app-sidebar {
+    width: 100%;
+  }
+}

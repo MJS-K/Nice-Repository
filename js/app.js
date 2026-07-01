@@ -154,6 +154,7 @@ function render() {
   renderTasks();
   renderStats();
   renderUsers();
+  renderRecordChart();
 }
 
 function renderDate() {
@@ -302,3 +303,72 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   });
 });
+
+// --- Record Chart (全员打卡总览) ---
+function getUserCompletionForDate(user, date, taskCount) {
+  let count = 0;
+  for (const task of state.tasks) {
+    const key = `${formatDate(date)}:${user}:${task.id}`;
+    if (state.checks[key]) count++;
+  }
+  return count;
+}
+
+function renderRecordChart() {
+  const container = document.getElementById("recordChart");
+  const today = new Date();
+  const { monday, sunday } = getWeekRange();
+
+  // Build day columns: Mon-Sun
+  const weekDays = [];
+  const d = new Date(monday);
+  const dayLabels = ["一", "二", "三", "四", "五", "六", "日"];
+  while (d <= sunday) {
+    weekDays.push({
+      date: new Date(d),
+      label: `${d.getMonth() + 1}/${d.getDate()}\n周${dayLabels[weekDays.length]}`,
+      isToday: formatDate(d) === formatDate(today),
+      isFuture: d > today,
+    });
+    d.setDate(d.getDate() + 1);
+  }
+
+  const taskCount = state.tasks.length;
+  if (taskCount === 0) {
+    container.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:8px 0;">暂无任务，请先添加任务</div>';
+    return;
+  }
+
+  // Build table
+  let html = '<table class="record-table"><thead><tr><th></th>';
+  for (const wd of weekDays) {
+    html += `<th${wd.isToday ? ' style="color:var(--primary)"' : ''}>${wd.label.replace("\n", "<br>")}</th>`;
+  }
+  html += '<th>总计</th></tr></thead><tbody>';
+
+  const currentUser = document.getElementById("username").value;
+
+  for (const user of state.users) {
+    const isMe = user === currentUser;
+    html += `<tr><td class="row-user${isMe ? " me" : ""}">${isMe ? "👉 " : ""}${user}</td>`;
+
+    let fullDays = 0;
+    for (const wd of weekDays) {
+      if (wd.isFuture) {
+        html += `<td class="cell-score future">-</td>`;
+        continue;
+      }
+      const completed = getUserCompletionForDate(user, wd.date, taskCount);
+      const cls = completed === taskCount ? "done" : (completed > 0 ? "partial" : "none");
+      const label = `${completed}/${taskCount}`;
+      html += `<td class="cell-score ${cls}${wd.isToday ? " today" : ""}">${label}</td>`;
+      if (completed === taskCount) fullDays++;
+    }
+
+    html += `<td class="cell-total">${fullDays}</td></tr>`;
+  }
+
+  html += '</tbody></table>';
+  container.innerHTML = html;
+}
+
