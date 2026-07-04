@@ -7,7 +7,6 @@ const DEFAULT_TASKS = [
 ];
 const STORAGE_KEY = "mjs_checkin";
 
-// === State ===
 let state = loadState();
 let currentDate = new Date();
 
@@ -34,7 +33,6 @@ function chkKey(tid) {
 }
 function isChk(tid) { return !!state.checks[chkKey(tid)]; }
 
-// === Actions ===
 function toggle(tid) {
   const k = chkKey(tid);
   if (state.checks[k]) delete state.checks[k]; else state.checks[k] = true;
@@ -63,23 +61,32 @@ function getWeekRange() {
 
 // === Render ===
 function render() {
-  renderDate(); renderTasks(); renderProgress();
-  renderUsers(); renderOverview();
+  renderDate();
+  renderGreeting();
+  renderTasks();
+  renderProgress();
+  renderUsers();
+  renderOverview();
 }
 
 function renderDate() {
   const d = currentDate;
   const wd = ["日","一","二","三","四","五","六"];
-  const s = `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 星期${wd[d.getDay()]}`;
-  document.getElementById("displayDate").textContent = isToday(d) ? "今天" : s;
+  const s = isToday(d) ? "今天" : `${d.getMonth()+1}月${d.getDate()}日 周${wd[d.getDay()]}`;
+  document.getElementById("displayDate").textContent = s;
   document.getElementById("todayBtn").style.display = isToday(d) ? "none" : "inline-block";
+}
+
+function renderGreeting() {
+  const u = document.getElementById("username").value;
+  document.getElementById("greetUser").textContent = u;
 }
 
 function renderProgress() {
   let done = 0;
   for (const t of state.tasks) { if (isChk(t.id)) done++; }
   const total = state.tasks.length;
-  document.getElementById("progressText").textContent = `${done} / ${total}`;
+  document.getElementById("progressText").textContent = `${done}/${total}`;
   document.getElementById("progressFill").style.width = total>0 ? `${(done/total)*100}%` : "0%";
 }
 
@@ -105,6 +112,10 @@ function renderTasks() {
     });
     c.appendChild(el);
   }
+  // Show empty state
+  if (state.tasks.length===0) {
+    c.innerHTML = '<div style="text-align:center;padding:30px 16px;color:var(--dim);font-size:13px;">还没有任务，点 + 添加吧</div>';
+  }
 }
 
 function renderUsers() {
@@ -116,7 +127,6 @@ function renderUsers() {
   }
   sel.value = state.users.includes(cur) ? cur : state.users[0];
 }
-document.getElementById("username").addEventListener("change", render);
 
 function renderOverview() {
   const c = document.getElementById("overviewChart");
@@ -158,10 +168,12 @@ function renderOverview() {
   c.innerHTML = html;
 }
 
-// === Nav ===
+// === Nav Events ===
 document.getElementById("prevDay").addEventListener("click", ()=>{ currentDate.setDate(currentDate.getDate()-1); render(); });
 document.getElementById("nextDay").addEventListener("click", ()=>{ currentDate.setDate(currentDate.getDate()+1); render(); });
 document.getElementById("todayBtn").addEventListener("click", ()=>{ currentDate=new Date(); render(); });
+document.getElementById("username").addEventListener("change", render);
+
 document.getElementById("addUserBtn").addEventListener("click", ()=>{
   const d=document.getElementById("addUserDialog"); document.getElementById("newUserName").value=""; d.showModal();
   d.addEventListener("close",()=>{ const v=document.getElementById("newUserName").value.trim(); if(d.returnValue==="ok"&&v) addUser(v); }, {once:true});
@@ -171,5 +183,18 @@ document.getElementById("addTaskBtn").addEventListener("click", ()=>{
   d.addEventListener("close",()=>{ const v=document.getElementById("newTaskName").value.trim(); if(d.returnValue==="ok"&&v) addTask(v); }, {once:true});
 });
 
-// === Init ===
+// Sheet (Overview) toggle
+const sheet = document.getElementById("sheet");
+const overlay = document.getElementById("overlay");
+document.getElementById("navOverview").addEventListener("click", ()=>{
+  sheet.classList.add("open");
+  overlay.classList.add("show");
+  renderOverview();
+});
+overlay.addEventListener("click", ()=>{
+  sheet.classList.remove("open");
+  overlay.classList.remove("show");
+});
+
+// Init
 render();

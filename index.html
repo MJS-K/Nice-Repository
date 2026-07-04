@@ -2,49 +2,84 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MJS · 每日打卡</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>MJS</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
+  <!-- App Container -->
   <div class="app">
+
+    <!-- Top Bar -->
     <header class="topbar">
-      <div class="topbar-left">
-        <span class="brand">MJS</span>
-        <span class="brand-dot">·</span>
-        <span class="brand-sub">每日打卡</span>
-      </div>
-      <div class="topbar-right">
-        <select id="username"></select>
-        <button class="btn-sm" id="addUserBtn">+ 添加</button>
-      </div>
+      <span class="logo">MJS</span>
+      <button class="avatar-btn" id="addUserBtn">+</button>
     </header>
 
-    <div class="layout">
-      <!-- Left: Check-in -->
-      <main class="panel panel-checkin">
-        <div class="date-row">
-          <button class="btn-icon-sm" id="prevDay">‹</button>
-          <span class="date-label" id="displayDate"></span>
-          <button class="btn-icon-sm" id="nextDay">›</button>
-          <button class="btn-today" id="todayBtn">今天</button>
-        </div>
+    <!-- Greeting -->
+    <section class="greeting">
+      <h1>Hello, <span id="greetUser">我自己</span></h1>
+      <p>今天也要加油哦 💪</p>
+    </section>
 
-        <div class="task-progress">
-          <span class="progress-text" id="progressText">0 / 4</span>
-          <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-        </div>
-
-        <div class="task-list" id="taskList"></div>
-        <button class="btn-add-task" id="addTaskBtn">+ 添加任务</button>
-      </main>
-
-      <!-- Right: Overview -->
-      <aside class="panel panel-overview">
-        <h2 class="panel-title">全员周报</h2>
-        <div class="overview-chart" id="overviewChart"></div>
-      </aside>
+    <!-- Filter Tabs -->
+    <div class="tabs">
+      <span class="tab active">全部</span>
+      <span class="tab">每日</span>
     </div>
+
+    <!-- Date & User Switcher -->
+    <div class="meta-row">
+      <div class="date-nav">
+        <button class="date-arrow" id="prevDay">‹</button>
+        <span id="displayDate" class="date-label"></span>
+        <button class="date-arrow" id="nextDay">›</button>
+        <button class="today-pill" id="todayBtn">今天</button>
+      </div>
+      <select id="username" class="user-select"></select>
+    </div>
+
+    <!-- Task List -->
+    <main class="task-board" id="taskBoard">
+      <div class="task-list" id="taskList"></div>
+    </main>
+
+    <!-- Progress + Add -->
+    <div class="bottom-actions">
+      <div class="progress-section">
+        <div class="progress-bar-bg">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <span class="progress-text" id="progressText">0/0</span>
+      </div>
+      <button class="fab" id="addTaskBtn">+</button>
+    </div>
+
+    <!-- Bottom Tab Bar -->
+    <nav class="bottombar">
+      <span class="nav-item active">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+        <span>首页</span>
+      </span>
+      <span class="nav-item" id="navOverview">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <span>总览</span>
+      </span>
+      <span class="nav-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>我的</span>
+      </span>
+    </nav>
+
+  </div>
+
+  <!-- Overview Sheet (slide up) -->
+  <div class="overlay" id="overlay"></div>
+  <div class="sheet" id="sheet">
+    <div class="sheet-handle"></div>
+    <h2 class="sheet-title">全员打卡总览</h2>
+    <div class="sheet-content" id="overviewChart"></div>
   </div>
 
   <!-- Dialogs -->
